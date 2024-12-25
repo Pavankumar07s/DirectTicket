@@ -1,0 +1,13 @@
+spring:
+  security:
+    user:
+      name: Pavan  # Default username
+      password: Pavan@2005  # Default generated password
+    # Optionally, configure roles and other security settings for dev profile
+    oauth2:
+      client:
+        registration:
+  cors:
+    allowed-origins: "http://localhost:3000, http://localhost:3002"  # Allow specific origins
+    allowed-methods: "GET, POST, PUT, DELETE"
+    allowed-headers: "Authorization, Content-Type, Accept"
