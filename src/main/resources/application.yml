@@ -11,3 +11,8 @@ spring:
     allowed-origins: "http://localhost:3000, http://localhost:3002"  # Allow specific origins
     allowed-methods: "GET, POST, PUT, DELETE"
     allowed-headers: "Authorization, Content-Type, Accept"
+api:
+  irctc:
+    url: https://irctc1.p.rapidapi.com/api/v3/trainBetweenStations
+    key: c4f00fe4dcmsh8d534755e3441b1p19e015jsn2aef2c24c556
+    host: irctc1.p.rapidapi.com
