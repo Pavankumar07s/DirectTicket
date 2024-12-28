@@ -14,5 +14,5 @@ spring:
 api:
   irctc:
     url: https://irctc1.p.rapidapi.com/api/v3/trainBetweenStations
-    key: c4f00fe4dcmsh8d534755e3441b1p19e015jsn2aef2c24c556
+    key: 5af8de3b73msh3a2ff5c21af98dbp16bca3jsn8d4dd02d503b
     host: irctc1.p.rapidapi.com
