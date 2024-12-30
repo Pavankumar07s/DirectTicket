@@ -1,6 +1,6 @@
 ### Ignoring application.yml ###
 application.yml
-
+*.yml
 ### Maven ###
 HELP.md
 target/
