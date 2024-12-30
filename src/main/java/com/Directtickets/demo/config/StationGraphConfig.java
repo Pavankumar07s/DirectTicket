@@ -23,7 +23,7 @@ public class StationGraphConfig {
         graph.addStation("ADI");    // Ahmedabad
         graph.addStation("LKO");    // Lucknow
         graph.addStation("BPL");    // Bhopal
-        graph.addStation("PNQ");    // Patna
+        graph.addStation("PNBE");    // Patna
         graph.addStation("NGP");    // Nagpur
         graph.addStation("CTC");    // Cuttack
         graph.addStation("VSKP");   // Visakhapatnam
@@ -50,8 +50,8 @@ public class StationGraphConfig {
         graph.addRoute("ADI", "JP", 3);      // Ahmedabad to Jaipur
         graph.addRoute("JP", "NDLS", 2);     // Jaipur to Delhi
         graph.addRoute("JP", "LKO", 5);      // Jaipur to Lucknow
-        graph.addRoute("LKO", "PNQ", 3);     // Lucknow to Patna
-        graph.addRoute("PNQ", "HKG", 4);     // Patna to Kolkata
+        graph.addRoute("LKO", "PNBE", 3);     // Lucknow to Patna
+        graph.addRoute("PNBE", "HKG", 4);     // Patna to Kolkata
         graph.addRoute("HKG", "VSKP", 5);    // Kolkata to Visakhapatnam
         graph.addRoute("VSKP", "HYB", 2);    // Visakhapatnam to Hyderabad
         graph.addRoute("HYB", "GNT", 2);     // Hyderabad to Guntur

@@ -1,4 +1,9 @@
 spring:
+  port: 8080
+  data:
+    mongodb:
+      uri: mongodb+srv://pawankumar14662693:Pavan%402005@cluster0.xc3pjzx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: DirectTickets
   security:
     user:
       name: Pavan  # Default username
@@ -8,11 +13,11 @@ spring:
       client:
         registration:
   cors:
-    allowed-origins: "http://localhost:3000, http://localhost:3002"  # Allow specific origins
+    allowed-origins: "http://localhost:3000, http://localhost:8081,exp://192.168.238.92:8081"  # Allow specific origins
     allowed-methods: "GET, POST, PUT, DELETE"
     allowed-headers: "Authorization, Content-Type, Accept"
 api:
   irctc:
     url: https://irctc1.p.rapidapi.com/api/v3/trainBetweenStations
-    key: 5af8de3b73msh3a2ff5c21af98dbp16bca3jsn8d4dd02d503b
+    key: c410dedcadmsh81ce343dafbff94p15844bjsn64e25bf61198
     host: irctc1.p.rapidapi.com

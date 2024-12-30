@@ -22,8 +22,8 @@ public class GetTrainLiveStatusService {
 
     @Value("${api.irctc.host}")
     private String apiHost;
-    public String getLiveStatus(String trainNo, int startDay) {
-        String cacheKey = "liveStatus:" + trainNo + ":" + startDay;
+    public String getLiveStatus(String trainNo) {
+        String cacheKey = "liveStatus:" + trainNo;
         String cachedResponse = (String) redisTemplate.opsForValue().get(cacheKey);
 
         if (cachedResponse != null) {
@@ -31,7 +31,7 @@ public class GetTrainLiveStatusService {
         }
 
         try {
-            HttpResponse<String> response = Unirest.get("https://irctc1.p.rapidapi.com/api/v1/liveTrainStatus?trainNo=" + trainNo + "&startDay=" + startDay)
+            HttpResponse<String> response = Unirest.get("https://irctc1.p.rapidapi.com/api/v1/liveTrainStatus?trainNo=" + trainNo)
                     .header("x-rapidapi-key", apiKey)
                     .header("x-rapidapi-host", apiHost)
                     .asString();
