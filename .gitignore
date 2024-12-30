@@ -1,13 +1,14 @@
-### Ignoring application.yml ###
+### Ignoring application.yml and resources directory ###
 application.yml
 *.yml
+src/main/resources/
+
 ### Maven ###
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-!**/src/resources
 
 ### STS ###
 .apt_generated
