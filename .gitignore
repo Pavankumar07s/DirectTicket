@@ -1,3 +1,7 @@
+### Ignoring application.yml ###
+application.yml
+
+### Maven ###
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -19,7 +23,6 @@ target/
 *.iws
 *.iml
 *.ipr
-*.yml
 
 ### NetBeans ###
 /nbproject/private/
