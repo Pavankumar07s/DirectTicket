@@ -1,7 +1,7 @@
 package com.Directtickets.demo.Controllers;
 
 import com.Directtickets.demo.Services.UserInformationService;
-import com.Directtickets.demo.entity.UserInformation;
+import com.Directtickets.demo.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,28 +18,28 @@ public class UserInformationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserInformation>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userInformationService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserInformation> getUserById(@PathVariable String id) {
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
         return ResponseEntity.ok(userInformationService.getUserById(id));
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserInformation> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         return ResponseEntity.ok(userInformationService.getUserByEmail(email));
     }
 
     @PostMapping
-    public ResponseEntity<UserInformation> createUser(@RequestBody UserInformation user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         return ResponseEntity.ok(userInformationService.createUser(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserInformation> updateUser(
-            @PathVariable String id, @RequestBody UserInformation updatedUser) {
+    public ResponseEntity<User> updateUser(
+            @PathVariable String id, @RequestBody User updatedUser) {
         return ResponseEntity.ok(userInformationService.updateUser(id, updatedUser));
     }
 
