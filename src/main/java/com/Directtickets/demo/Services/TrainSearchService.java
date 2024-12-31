@@ -162,6 +162,8 @@ package com.Directtickets.demo.Services;
 import com.Directtickets.demo.util.StationGraph;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
@@ -171,6 +173,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -207,7 +210,7 @@ public class TrainSearchService {
             return cachedData;
         }
 
-        List<List<String>> paths = stationGraph.yenKShortestPaths(source, destination, 3);
+        List<List<String>> paths = stationGraph.yenKShortestPaths(source, destination, 1);
         System.out.println("Found paths: " + paths);
 
         Map<String, List<Object>> result = new HashMap<>();
@@ -236,13 +239,20 @@ public class TrainSearchService {
             return "No trains found for the given source and destination.";
         }
 
-        String trainPathJson = new ObjectMapper().writeValueAsString(result);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty printing
+
+        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+        String trainPathJson = writer.writeValueAsString(result);
+
         redisTemplate.opsForValue().set(cacheKey, trainPathJson, 5, TimeUnit.MINUTES);
+        System.out.println(trainPathJson);
         return trainPathJson;
     }
 
     private List<Object> checkDirectTrains(String source, String destination, String date) throws Exception {
         HttpResponse<String> response = makeApiRequest(source, destination, date);
+        System.out.println(response.getStatus() + " " + response.getBody());
         if (response.getStatus() == 200) {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(response.getBody());
@@ -301,11 +311,14 @@ public class TrainSearchService {
     private boolean isValidConnection(Object firstTrain, Object secondTrain) {
         try {
             String arrivalTime = (String) getFieldValue(firstTrain, "to_sta");
-            Integer arrivalDay = (Integer) getFieldValue(firstTrain, "to_day");
+            String arrivalDayStr = (String) getFieldValue(firstTrain, "to_day");
             String departureTime = (String) getFieldValue(secondTrain, "from_std");
-            Integer departureDay = (Integer) getFieldValue(secondTrain, "from_day");
+            String departureDayStr = (String) getFieldValue(secondTrain, "from_day");
 
-            if (arrivalTime != null && arrivalDay != null && departureTime != null && departureDay != null) {
+            if (arrivalTime != null && arrivalDayStr != null && departureTime != null && departureDayStr != null) {
+                int arrivalDay = Integer.parseInt(arrivalDayStr);
+                int departureDay = Integer.parseInt(departureDayStr);
+
                 LocalTime arrival = LocalTime.parse(arrivalTime);
                 LocalTime departure = LocalTime.parse(departureTime);
 
@@ -314,6 +327,7 @@ public class TrainSearchService {
                     timeDifferenceInMinutes += 24 * 60;
                 }
 
+                System.out.println(timeDifferenceInMinutes + " time difference in minutes");
                 return timeDifferenceInMinutes >= 120 && timeDifferenceInMinutes <= 240;
             }
         } catch (Exception e) {
@@ -322,11 +336,18 @@ public class TrainSearchService {
         return false;
     }
 
+
     private HttpResponse<String> makeApiRequest(String fromStation, String toStation, String date) throws Exception {
+        System.out.println("Date for API Request: " + date);
+        LocalDate journeyDate = LocalDate.parse(date); // Adjust pattern if necessary
+        if (journeyDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Date of journey cannot be in the past.");
+        }
+
         return Unirest.get(apiUrl)
                 .queryString("fromStationCode", fromStation)
                 .queryString("toStationCode", toStation)
-                .queryString("date", date)
+                .queryString("dateOfJourney", date)
                 .header("x-rapidapi-key", apiKey)
                 .header("x-rapidapi-host", apiHost)
                 .asString();
@@ -335,11 +356,12 @@ public class TrainSearchService {
     private Object getFieldValue(Object train, String fieldName) {
         try {
             JsonNode trainNode = (JsonNode) train;
-            return trainNode.path(fieldName).asText(null);
+            return trainNode.path(fieldName).asText(null); // Always return as String
         } catch (Exception e) {
             return null;
         }
     }
+
 
     private List<Object> extractTrainDetails(JsonNode jsonNode) {
         List<Object> trains = new ArrayList<>();
