@@ -64,7 +64,7 @@ public class StationGraph {
         }
         Collections.reverse(path);
 
-        if (path.isEmpty() || !path.getFirst().equals(start)) {
+        if (path.isEmpty() || !path.get(0).equals(start)) {
             return Collections.emptyList();
         } else {
             return path;
