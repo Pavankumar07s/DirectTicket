@@ -63,6 +63,7 @@ public class SpringSecurityConfig {
         config.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
                 "exp://192.168.238.92:8081",
+                "http://192.168.127.212:8081",
                 "http://localhost:8081"
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Allow HTTP methods
